@@ -1,0 +1,28 @@
+.auth-bg-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container {
+  position: relative;
+  z-index: 2 !important;
+  color: white !important;
+}
+
+.lnk {
+  text-decoration: none;
+}
+
+.btnStyle {
+  background-color: red;
+  border: 2px solid red;
+}
+
+.btnStyle:hover {
+  background-color: rgb(75, 11, 11);
+}
