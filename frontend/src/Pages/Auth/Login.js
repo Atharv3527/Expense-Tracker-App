@@ -45,20 +45,34 @@ const Login = () => {
 
     const { email, password } = values;
 
-    setLoading(true);
+    if (!email || !password) {
+      toast.error("Please enter email and password", toastOptions);
+      return;
+    }
 
-    const { data } = await axios.post(loginAPI, {
-      email,
-      password,
-    });
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email", toastOptions);
+      return;
+    }
 
-    if (data.success === true) {
-      localStorage.setItem("user", JSON.stringify(data.user));
-      navigate("/");
-      toast.success(data.message, toastOptions);
-      setLoading(false);
-    } else {
-      toast.error(data.message, toastOptions);
+    try {
+      setLoading(true);
+
+      const { data } = await axios.post(loginAPI, {
+        email,
+        password,
+      });
+
+      if (data.success === true) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/");
+        toast.success(data.message, toastOptions);
+      } else {
+        toast.error(data.message, toastOptions);
+      }
+    } catch (error) {
+      toast.error("Login failed. Please try again.", toastOptions);
+    } finally {
       setLoading(false);
     }
   };
@@ -75,7 +89,7 @@ const Login = () => {
               />
             </h1>
             <h2 className="text-white text-center ">Login</h2>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formBasicEmail" className="mt-3">
                 <Form.Label className="text-white">Email address</Form.Label>
                 <Form.Control
@@ -107,14 +121,9 @@ const Login = () => {
                 }}
                 className="mt-4"
               >
-                <Link to="/forgotPassword" className="text-white lnk">
-                  Forgot Password?
-                </Link>
-
                 <Button
                   type="submit"
                   className=" text-center mt-3 btnStyle"
-                  onClick={!loading ? handleSubmit : null}
                   disabled={loading}
                 >
                   {loading ? "Signin…" : "Login"}

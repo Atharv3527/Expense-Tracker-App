@@ -2,7 +2,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
   padding: 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
 }
 
 body,
@@ -16,12 +22,65 @@ html {
   min-height: 100vh;
 }
 
+.homeContainer {
+  padding-bottom: 24px;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.summaryCard {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.summaryCard p {
+  margin-bottom: 8px;
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+.summaryCard h4 {
+  margin: 0;
+  font-weight: 700;
+}
+
+.incomeText {
+  color: #7bffc4;
+}
+
+.expenseText {
+  color: #ffd0d0;
+}
+
+.searchBox {
+  min-width: 260px;
+}
+
 .data-table {
   border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .data-table thead th {
-  background-color: #f5f5f5;
+  background-color: rgba(255, 255, 255, 0.88);
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.data-table tbody td {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .icons-handle {
@@ -81,20 +140,41 @@ html {
   color: black;
 }
 
+.emptyState {
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
+  color: #fff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.12);
+}
+
 @media only screen and (max-width: 600px) {
+  .summaryGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 10px;
+  }
+
   .filterRow {
-    padding: 0px !important;
+    padding: 12px !important;
     margin-top: 0px !important;
     display: flex;
-    gap: "5px";
+    gap: 8px;
   }
+
+  .searchBox {
+    min-width: 100%;
+  }
+
   .addNew {
-    /* padding-top: 20px; */
     display: none !important;
   }
+
   .mobileBtn {
     display: inline-block !important;
   }
+
   .iconBtnBox {
     display: flex;
     align-items: center;
@@ -103,19 +183,21 @@ html {
   }
 
   .date {
-    /* padding: 10px; */
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: "10px";
+    gap: 10px;
     flex-direction: column;
     margin-bottom: 10px;
   }
+
   .date .form-group {
-    width: 45%;
+    width: 100%;
   }
 
   .containerBtn {
     margin-left: 0px !important;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }

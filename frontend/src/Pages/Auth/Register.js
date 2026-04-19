@@ -45,22 +45,41 @@ const Register = () => {
 
     const { name, email, password } = values;
 
-    setLoading(false);
+    if (!name || !email || !password) {
+      toast.error("Please fill all required fields", toastOptions);
+      return;
+    }
 
-    const { data } = await axios.post(registerAPI, {
-      name,
-      email,
-      password,
-    });
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email", toastOptions);
+      return;
+    }
 
-    if (data.success === true) {
-      delete data.user.password;
-      localStorage.setItem("user", JSON.stringify(data.user));
-      toast.success(data.message, toastOptions);
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters", toastOptions);
+      return;
+    }
+
+    try {
       setLoading(true);
-      navigate("/");
-    } else {
-      toast.error(data.message, toastOptions);
+
+      const { data } = await axios.post(registerAPI, {
+        name,
+        email,
+        password,
+      });
+
+      if (data.success === true) {
+        delete data.user.password;
+        localStorage.setItem("user", JSON.stringify(data.user));
+        toast.success(data.message, toastOptions);
+        navigate("/");
+      } else {
+        toast.error(data.message, toastOptions);
+      }
+    } catch (error) {
+      toast.error("Registration failed. Please try again.", toastOptions);
+    } finally {
       setLoading(false);
     }
   };
@@ -80,7 +99,7 @@ const Register = () => {
           </h1>
           <Col md={{ span: 6, offset: 3 }}>
             <h2 className="text-white text-center mt-5">Registration</h2>
-            <Form>
+            <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formBasicName" className="mt-3">
                 <Form.Label className="text-white">Name</Form.Label>
                 <Form.Control
@@ -122,14 +141,9 @@ const Register = () => {
                 }}
                 className="mt-4"
               >
-                <Link to="/forgotPassword" className="text-white lnk">
-                  Forgot Password?
-                </Link>
-
                 <Button
                   type="submit"
                   className=" text-center mt-3 btnStyle"
-                  onClick={!loading ? handleSubmit : null}
                   disabled={loading}
                 >
                   {loading ? "Registering..." : "Signup"}

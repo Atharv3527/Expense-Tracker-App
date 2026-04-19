@@ -28,40 +28,47 @@ const TableData = (props) => {
   };
 
   const handleEditSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    const {data} = await axios.put(`${editTransactions}/${currId}`, {
+    const { data } = await axios.put(`${editTransactions}/${currId}`, {
       ...values,
     });
 
-    if(data.success === true){
-
+    if (data.success === true) {
       await handleClose();
       await setRefresh(!refresh);
-      window.location.reload();
-    }
-    else{
+      if (props.onDataChanged) {
+        props.onDataChanged();
+      }
+    } else {
       console.log("error");
     }
-
-  }
+  };
 
   const handleDeleteClick = async (itemKey) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this transaction?",
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
     console.log(user._id);
     console.log("Clicked button ID delete:", itemKey);
     setCurrId(itemKey);
-    const {data} = await axios.post(`${deleteTransactions}/${itemKey}`,{
+    const { data } = await axios.post(`${deleteTransactions}/${itemKey}`, {
       userId: props.user._id,
     });
 
-    if(data.success === true){
+    if (data.success === true) {
       await setRefresh(!refresh);
-      window.location.reload();
-    }
-    else{
+      if (props.onDataChanged) {
+        props.onDataChanged();
+      }
+    } else {
       console.log("error");
     }
-
   };
 
   const [values, setValues] = useState({
@@ -87,7 +94,7 @@ const TableData = (props) => {
   useEffect(() => {
     setUser(props.user);
     setTransactions(props.data);
-  }, [props.data,props.user, refresh]);
+  }, [props.data, props.user, refresh]);
 
   return (
     <>
@@ -176,7 +183,9 @@ const TableData = (props) => {
                                     value={values.category}
                                     onChange={handleChange}
                                   >
-                                    <option value="">{editingTransaction[0].category}</option>
+                                    <option value="">
+                                      {editingTransaction[0].category}
+                                    </option>
                                     <option value="Groceries">Groceries</option>
                                     <option value="Rent">Rent</option>
                                     <option value="Salary">Salary</option>
@@ -202,7 +211,9 @@ const TableData = (props) => {
                                   <Form.Control
                                     type="text"
                                     name="description"
-                                    placeholder={editingTransaction[0].description}
+                                    placeholder={
+                                      editingTransaction[0].description
+                                    }
                                     value={values.description}
                                     onChange={handleChange}
                                   />
@@ -218,7 +229,13 @@ const TableData = (props) => {
                                     value={values.transactionType}
                                     onChange={handleChange}
                                   >
-                                    <option value={editingTransaction[0].transactionType}>{editingTransaction[0].transactionType}</option>
+                                    <option
+                                      value={
+                                        editingTransaction[0].transactionType
+                                      }
+                                    >
+                                      {editingTransaction[0].transactionType}
+                                    </option>
                                     <option value="Credit">Credit</option>
                                     <option value="Expense">Expense</option>
                                   </Form.Select>
@@ -242,7 +259,13 @@ const TableData = (props) => {
                               <Button variant="secondary" onClick={handleClose}>
                                 Close
                               </Button>
-                              <Button variant="primary" type="submit" onClick={handleEditSubmit}>Submit</Button>
+                              <Button
+                                variant="primary"
+                                type="submit"
+                                onClick={handleEditSubmit}
+                              >
+                                Submit
+                              </Button>
                             </Modal.Footer>
                           </Modal>
                         </div>
