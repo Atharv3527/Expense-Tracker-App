@@ -1,21 +1,22 @@
-.navbarCSS{
-    padding: 15px 20px;
-    display: flex !important;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between !important;
-    width: 100vw;
-    
+.navbarCSS {
+  padding: 14px 24px;
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between !important;
+  width: 100%;
+  position: relative;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-
-
-.navItemCSS{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+.navItemCSS {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 /* .custom-toggler.navbar-toggler-icon {
@@ -32,4 +33,3 @@
     }
 
   } */
-
